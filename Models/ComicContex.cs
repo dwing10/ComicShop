@@ -13,15 +13,22 @@ namespace ComicShop.Models
 
         public DbSet<Comic> Comics { get; set; }
 
+        public DbSet<Publisher> Publishers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
+            modelBuilder.Entity<Publisher>().HasData(
+                new Publisher {PublisherID = 1, PublisherName = "Marvel Studios" },
+                new Publisher { PublisherID = 2, PublisherName = "DC Comics" },
+                new Publisher { PublisherID = 3, PublisherName = "Image Comics" });
+
             modelBuilder.Entity<Comic>().HasData(
                 new Comic
                 {
                     ComicId = 1,
                     Title = "Batman #608",
                     Year = 2019,
-                    Publisher = "DC",
+                    PublisherID = 2,
                     Rating = 5
                 },
                 new Comic
@@ -29,7 +36,7 @@ namespace ComicShop.Models
                     ComicId = 2,
                     Title = "Superman Vs. Darkseid",
                     Year = 2015,
-                    Publisher = "DC",
+                    PublisherID = 2,
                     Rating = 5
                 },
                 new Comic
@@ -37,7 +44,7 @@ namespace ComicShop.Models
                     ComicId = 3,
                     Title = "Spawn #306",
                     Year = 2020,
-                    Publisher = "Image Comics",
+                    PublisherID = 3,
                     Rating = 5
                 },
                 new Comic
@@ -45,7 +52,7 @@ namespace ComicShop.Models
                     ComicId = 4,
                     Title = "The Tomb of Dracula",
                     Year = 1973,
-                    Publisher = "Marvel",
+                    PublisherID = 1,
                     Rating = 3
                 },
                 new Comic
@@ -53,7 +60,7 @@ namespace ComicShop.Models
                     ComicId = 5,
                     Title = "True Believers #1 - Venom Carnage",
                     Year = 2019,
-                    Publisher = "Marvel",
+                    PublisherID = 1,
                     Rating = 4
                 });
         }

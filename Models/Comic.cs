@@ -23,7 +23,8 @@ namespace ComicShop.Models
         public int Rating { get; set; }
 
         [Required(ErrorMessage = "Please Enter A Publisher")]
-        public string Publisher { get; set; }
+        public int PublisherID { get; set; }
+        public Publisher PublisherClass { get; set; }
 
         #endregion
     }

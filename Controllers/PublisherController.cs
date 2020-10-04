@@ -9,22 +9,22 @@ using ComicShop.Models;
 
 namespace ComicShop.Controllers
 {
-    public class ComicController : Controller
+    public class PublisherController : Controller
     {
         private readonly ComicContex _context;
 
-        public ComicController(ComicContex context)
+        public PublisherController(ComicContex context)
         {
             _context = context;
         }
 
-        // GET: Comic
+        // GET: Publisher
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Comics.Include(p => p.PublisherClass).ToListAsync());
+            return View(await _context.Publishers.ToListAsync());
         }
 
-        // GET: Comic/Details/5
+        // GET: Publisher/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,41 +32,39 @@ namespace ComicShop.Controllers
                 return NotFound();
             }
 
-            var comic = await _context.Comics
-                .Include(i => i.PublisherClass)
-                .FirstOrDefaultAsync(m => m.ComicId == id);
-            if (comic == null)
+            var publisher = await _context.Publishers
+                .FirstOrDefaultAsync(m => m.PublisherID == id);
+            if (publisher == null)
             {
                 return NotFound();
             }
 
-            return View(comic);
+            return View(publisher);
         }
 
-        // GET: Comic/Create
+        // GET: Publisher/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Comic/Create
+        // POST: Publisher/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ComicId,Title,Year,Rating,Publisher")] Comic comic)
+        public async Task<IActionResult> Create([Bind("PublisherID,PublisherName")] Publisher publisher)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(comic);
+                _context.Add(publisher);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherID", comic.PublisherID);
-            return View(comic);
+            return View(publisher);
         }
 
-        // GET: Comic/Edit/5
+        // GET: Publisher/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,23 +72,22 @@ namespace ComicShop.Controllers
                 return NotFound();
             }
 
-            var comic = await _context.Comics.FindAsync(id);
-            if (comic == null)
+            var publisher = await _context.Publishers.FindAsync(id);
+            if (publisher == null)
             {
                 return NotFound();
             }
-            ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherID", comic.PublisherID);
-            return View(comic);
+            return View(publisher);
         }
 
-        // POST: Comic/Edit/5
+        // POST: Publisher/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ComicId,Title,Year,Rating,Publisher")] Comic comic)
+        public async Task<IActionResult> Edit(int id, [Bind("PublisherID,PublisherName")] Publisher publisher)
         {
-            if (id != comic.ComicId)
+            if (id != publisher.PublisherID)
             {
                 return NotFound();
             }
@@ -99,12 +96,12 @@ namespace ComicShop.Controllers
             {
                 try
                 {
-                    _context.Update(comic);
+                    _context.Update(publisher);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ComicExists(comic.ComicId))
+                    if (!PublisherExists(publisher.PublisherID))
                     {
                         return NotFound();
                     }
@@ -115,11 +112,10 @@ namespace ComicShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherID", comic.PublisherID);
-            return View(comic);
+            return View(publisher);
         }
 
-        // GET: Comic/Delete/5
+        // GET: Publisher/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -127,31 +123,30 @@ namespace ComicShop.Controllers
                 return NotFound();
             }
 
-            var comic = await _context.Comics
-                .Include(i => i.PublisherClass)
-                .FirstOrDefaultAsync(m => m.ComicId == id);
-            if (comic == null)
+            var publisher = await _context.Publishers
+                .FirstOrDefaultAsync(m => m.PublisherID == id);
+            if (publisher == null)
             {
                 return NotFound();
             }
 
-            return View(comic);
+            return View(publisher);
         }
 
-        // POST: Comic/Delete/5
+        // POST: Publisher/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var comic = await _context.Comics.FindAsync(id);
-            _context.Comics.Remove(comic);
+            var publisher = await _context.Publishers.FindAsync(id);
+            _context.Publishers.Remove(publisher);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ComicExists(int id)
+        private bool PublisherExists(int id)
         {
-            return _context.Comics.Any(e => e.ComicId == id);
+            return _context.Publishers.Any(e => e.PublisherID == id);
         }
     }
 }
