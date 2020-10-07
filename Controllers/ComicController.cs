@@ -46,6 +46,7 @@ namespace ComicShop.Controllers
         // GET: Comic/Create
         public IActionResult Create()
         {
+            ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherName");
             return View();
         }
 
@@ -54,7 +55,7 @@ namespace ComicShop.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ComicId,Title,Year,Rating,Publisher")] Comic comic)
+        public async Task<IActionResult> Create([Bind("ComicId,Title,Year,Rating,PublisherID")] Comic comic)
         {
             if (ModelState.IsValid)
             {
@@ -62,7 +63,7 @@ namespace ComicShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherID", comic.PublisherID);
+            ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherName", comic.PublisherID);
             return View(comic);
         }
 
@@ -79,7 +80,7 @@ namespace ComicShop.Controllers
             {
                 return NotFound();
             }
-            ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherID", comic.PublisherID);
+            ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherName", comic.PublisherID);
             return View(comic);
         }
 
@@ -88,7 +89,7 @@ namespace ComicShop.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ComicId,Title,Year,Rating,Publisher")] Comic comic)
+        public async Task<IActionResult> Edit(int id, [Bind("ComicId,Title,Year,Rating,PublisherID")] Comic comic)
         {
             if (id != comic.ComicId)
             {
@@ -115,7 +116,7 @@ namespace ComicShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherID", comic.PublisherID);
+            ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherName", comic.PublisherID);
             return View(comic);
         }
 
