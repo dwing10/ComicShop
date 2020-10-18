@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace ComicShop.Models
     {
         #region Properties
 
+        [Key]
         public int ComicId { get; set; }
 
         [Required(ErrorMessage = "Please Enter A Title")]
@@ -23,6 +25,8 @@ namespace ComicShop.Models
         public int Rating { get; set; }
 
         [Required(ErrorMessage = "Please Enter A Publisher")]
+        [Display(Name = "Publisher ID")]
+        [ForeignKey("PublisherID")]
         public int PublisherID { get; set; }
         public Publisher PublisherClass { get; set; }
 

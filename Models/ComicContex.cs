@@ -18,9 +18,9 @@ namespace ComicShop.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
             modelBuilder.Entity<Publisher>().HasData(
-                new Publisher {PublisherID = 1, PublisherName = "Marvel Studios" },
-                new Publisher { PublisherID = 2, PublisherName = "DC Comics" },
-                new Publisher { PublisherID = 3, PublisherName = "Image Comics" });
+                new Publisher {PublisherID = 1, PublisherName = "Marvel Studios", City = "New York", State = "NY", Country = "US", PostalCode = "10001", Email = "OnlineSupport@marvel.com." },
+                new Publisher { PublisherID = 2, PublisherName = "DC Comics", Address = "4000 Warner Boulevard", City = "Burbank", State = "CA", Country = "US", PostalCode = "91522", Phone = "818.954.4430" },
+                new Publisher { PublisherID = 3, PublisherName = "Image Comics", City = "Portland", State = "OR", Country = "US", PostalCode = "97035" });
 
             modelBuilder.Entity<Comic>().HasData(
                 new Comic
