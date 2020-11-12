@@ -21,7 +21,7 @@ namespace ComicShop.Controllers
         // GET: Comic
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Comics.Include(p => p.PublisherClass).ToListAsync());
+            return View(await _context.Comics.Include(p => p.PublisherClass).Include(w => w.Writer).Include(a => a.Artist).ToListAsync());
         }
 
         // GET: Comic/Details/5
@@ -33,7 +33,7 @@ namespace ComicShop.Controllers
             }
 
             var comic = await _context.Comics
-                .Include(i => i.PublisherClass)
+                .Include(i => i.PublisherClass).Include(w => w.Writer).Include(a => a.Artist)
                 .FirstOrDefaultAsync(m => m.ComicId == id);
             if (comic == null)
             {
@@ -46,6 +46,8 @@ namespace ComicShop.Controllers
         // GET: Comic/Create
         public IActionResult Create()
         {
+            ViewData["WriterID"] = new SelectList(_context.Writers, "WriterID", "WriterName");
+            ViewData["WriterID"] = new SelectList(_context.Artists, "ArtistID", "ArtistName");
             ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherName");
             return View();
         }
@@ -55,7 +57,7 @@ namespace ComicShop.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ComicId,Title,Year,Rating,PublisherID")] Comic comic)
+        public async Task<IActionResult> Create([Bind("ComicId,Title,ArtistID,WriterID,Year,Rating,PublisherID")] Comic comic)
         {
             if (ModelState.IsValid)
             {
@@ -63,6 +65,8 @@ namespace ComicShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["WriterID"] = new SelectList(_context.Writers, "WriterID", "WriterName", comic.WriterID);
+            ViewData["WriterID"] = new SelectList(_context.Artists, "ArtistID", "ArtistName", comic.ArtistID);
             ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherName", comic.PublisherID);
             return View(comic);
         }
@@ -80,6 +84,8 @@ namespace ComicShop.Controllers
             {
                 return NotFound();
             }
+            ViewData["WriterID"] = new SelectList(_context.Writers, "WriterID", "WriterName", comic.WriterID);
+            ViewData["WriterID"] = new SelectList(_context.Artists, "ArtistID", "ArtistName", comic.ArtistID);
             ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherName", comic.PublisherID);
             return View(comic);
         }
@@ -89,7 +95,7 @@ namespace ComicShop.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ComicId,Title,Year,Rating,PublisherID")] Comic comic)
+        public async Task<IActionResult> Edit(int id, [Bind("ComicId,Title,WriterID,ArtistID,Year,Rating,PublisherID")] Comic comic)
         {
             if (id != comic.ComicId)
             {
@@ -116,6 +122,8 @@ namespace ComicShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["WriterID"] = new SelectList(_context.Writers, "WriterID", "WriterName", comic.WriterID);
+            ViewData["WriterID"] = new SelectList(_context.Artists, "ArtistID", "ArtistName", comic.ArtistID);
             ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherName", comic.PublisherID);
             return View(comic);
         }
@@ -129,7 +137,7 @@ namespace ComicShop.Controllers
             }
 
             var comic = await _context.Comics
-                .Include(i => i.PublisherClass)
+                .Include(i => i.PublisherClass).Include(w => w.Writer).Include(a => a.Artist)
                 .FirstOrDefaultAsync(m => m.ComicId == id);
             if (comic == null)
             {

@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComicShop.Migrations
 {
     [DbContext(typeof(ComicContex))]
-    [Migration("20201006230620_ThirdCreate")]
-    partial class ThirdCreate
+    [Migration("20201111225659_RemovedArtworkModel")]
+    partial class RemovedArtworkModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -96,8 +96,31 @@ namespace ComicShop.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnName("Zipcode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PublisherName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(2)")
+                        .HasMaxLength(2);
 
                     b.HasKey("PublisherID");
 
@@ -107,17 +130,32 @@ namespace ComicShop.Migrations
                         new
                         {
                             PublisherID = 1,
-                            PublisherName = "Marvel Studios"
+                            City = "New York",
+                            Country = "US",
+                            Email = "OnlineSupport@marvel.com.",
+                            PostalCode = "10001",
+                            PublisherName = "Marvel Studios",
+                            State = "NY"
                         },
                         new
                         {
                             PublisherID = 2,
-                            PublisherName = "DC Comics"
+                            Address = "4000 Warner Boulevard",
+                            City = "Burbank",
+                            Country = "US",
+                            Phone = "818.954.4430",
+                            PostalCode = "91522",
+                            PublisherName = "DC Comics",
+                            State = "CA"
                         },
                         new
                         {
                             PublisherID = 3,
-                            PublisherName = "Image Comics"
+                            City = "Portland",
+                            Country = "US",
+                            PostalCode = "97035",
+                            PublisherName = "Image Comics",
+                            State = "OR"
                         });
                 });
 

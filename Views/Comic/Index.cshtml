@@ -15,6 +15,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
+            <td>
+                @Html.DisplayNameFor(model => model.Writer.WriterName)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Artist.ArtistName)
+            </td>
             <th>
                 @Html.DisplayNameFor(model => model.Year)
             </th>
@@ -32,6 +38,12 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Writer.WriterName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Artist.ArtistName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Year)

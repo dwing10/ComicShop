@@ -9,16 +9,64 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComicShop.Migrations
 {
     [DbContext(typeof(ComicContex))]
-    [Migration("20201018024521_DataAndAnnotations")]
-    partial class DataAndAnnotations
+    [Migration("20201112013124_AddedModels")]
+    partial class AddedModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ComicShop.Models.Artist", b =>
+                {
+                    b.Property<int>("ArtistId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ArtistName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ArtistId");
+
+                    b.ToTable("Artists");
+
+                    b.HasData(
+                        new
+                        {
+                            ArtistId = 1,
+                            ArtistName = "Jim Lee"
+                        },
+                        new
+                        {
+                            ArtistId = 2,
+                            ArtistName = "Alex Ross"
+                        },
+                        new
+                        {
+                            ArtistId = 3,
+                            ArtistName = "Multiple"
+                        },
+                        new
+                        {
+                            ArtistId = 4,
+                            ArtistName = "Philip Tan"
+                        },
+                        new
+                        {
+                            ArtistId = 5,
+                            ArtistName = "Gene Colan"
+                        },
+                        new
+                        {
+                            ArtistId = 6,
+                            ArtistName = "Mark Bagley"
+                        });
+                });
 
             modelBuilder.Entity("ComicShop.Models.Comic", b =>
                 {
@@ -26,6 +74,9 @@ namespace ComicShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ArtistID")
+                        .HasColumnType("int");
 
                     b.Property<int>("PublisherID")
                         .HasColumnType("int");
@@ -37,12 +88,19 @@ namespace ComicShop.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("WriterID")
+                        .HasColumnType("int");
+
                     b.Property<int>("Year")
                         .HasColumnType("int");
 
                     b.HasKey("ComicId");
 
+                    b.HasIndex("ArtistID");
+
                     b.HasIndex("PublisherID");
+
+                    b.HasIndex("WriterID");
 
                     b.ToTable("Comics");
 
@@ -50,41 +108,51 @@ namespace ComicShop.Migrations
                         new
                         {
                             ComicId = 1,
+                            ArtistID = 1,
                             PublisherID = 2,
                             Rating = 5,
                             Title = "Batman #608",
+                            WriterID = 1,
                             Year = 2019
                         },
                         new
                         {
                             ComicId = 2,
+                            ArtistID = 3,
                             PublisherID = 2,
                             Rating = 5,
                             Title = "Superman Vs. Darkseid",
+                            WriterID = 2,
                             Year = 2015
                         },
                         new
                         {
                             ComicId = 3,
+                            ArtistID = 4,
                             PublisherID = 3,
                             Rating = 5,
                             Title = "Spawn #306",
+                            WriterID = 4,
                             Year = 2020
                         },
                         new
                         {
                             ComicId = 4,
+                            ArtistID = 5,
                             PublisherID = 1,
                             Rating = 3,
                             Title = "The Tomb of Dracula",
+                            WriterID = 5,
                             Year = 1973
                         },
                         new
                         {
                             ComicId = 5,
+                            ArtistID = 6,
                             PublisherID = 1,
                             Rating = 4,
                             Title = "True Believers #1 - Venom Carnage",
+                            WriterID = 6,
                             Year = 2019
                         });
                 });
@@ -131,7 +199,9 @@ namespace ComicShop.Migrations
                         {
                             PublisherID = 1,
                             City = "New York",
+                            Country = "US",
                             Email = "OnlineSupport@marvel.com.",
+                            PostalCode = "10001",
                             PublisherName = "Marvel Studios",
                             State = "NY"
                         },
@@ -140,7 +210,9 @@ namespace ComicShop.Migrations
                             PublisherID = 2,
                             Address = "4000 Warner Boulevard",
                             City = "Burbank",
+                            Country = "US",
                             Phone = "818.954.4430",
+                            PostalCode = "91522",
                             PublisherName = "DC Comics",
                             State = "CA"
                         },
@@ -148,16 +220,78 @@ namespace ComicShop.Migrations
                         {
                             PublisherID = 3,
                             City = "Portland",
+                            Country = "US",
+                            PostalCode = "97035",
                             PublisherName = "Image Comics",
                             State = "OR"
                         });
                 });
 
+            modelBuilder.Entity("ComicShop.Models.Writer", b =>
+                {
+                    b.Property<int>("WriterID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("WriterName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("WriterID");
+
+                    b.ToTable("Writers");
+
+                    b.HasData(
+                        new
+                        {
+                            WriterID = 1,
+                            WriterName = "Jeph Loeb"
+                        },
+                        new
+                        {
+                            WriterID = 2,
+                            WriterName = "John Byrne"
+                        },
+                        new
+                        {
+                            WriterID = 3,
+                            WriterName = "Multiple"
+                        },
+                        new
+                        {
+                            WriterID = 4,
+                            WriterName = "Todd McFarlane"
+                        },
+                        new
+                        {
+                            WriterID = 5,
+                            WriterName = "Stan Lee"
+                        },
+                        new
+                        {
+                            WriterID = 6,
+                            WriterName = "David Michelinie"
+                        });
+                });
+
             modelBuilder.Entity("ComicShop.Models.Comic", b =>
                 {
+                    b.HasOne("ComicShop.Models.Artist", "Artist")
+                        .WithMany()
+                        .HasForeignKey("ArtistID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ComicShop.Models.Publisher", "PublisherClass")
                         .WithMany()
                         .HasForeignKey("PublisherID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ComicShop.Models.Writer", "Writer")
+                        .WithMany()
+                        .HasForeignKey("WriterID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
