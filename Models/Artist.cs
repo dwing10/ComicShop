@@ -8,7 +8,7 @@ namespace ComicShop.Models
 {
     public class Artist
     {
-        public int ArtistId { get; set; }
+        public int ArtistID { get; set; }
 
         [Required(ErrorMessage = "PLEASE ENTER THE ARTIST'S NAME")]
         [Display(Name = "Artist's Name")]

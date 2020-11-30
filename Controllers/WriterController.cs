@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ComicShop.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ComicShop.Controllers
 {
+    [Authorize]
     public class WriterController : Controller
     {
         private readonly ComicContex _context;

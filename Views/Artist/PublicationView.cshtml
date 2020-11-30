@@ -1,0 +1,28 @@
+﻿@model PublicationArtistViewModel
+@{
+    ViewData["Title"] = "Artists And Publishers";
+}
+<div class="row">
+    <h1 class="text-center col-md-12">@ViewBag.Title</h1>
+    <div class="col-md-4">
+        @foreach (var item in Model.Artists)
+        {
+            <h4>@item.ArtistName</h4>
+            <ul>
+                @foreach (var comic in Model.Comics)
+                {
+                    @if (item.ArtistID == comic.ArtistID)
+                    {
+                        @foreach (var publisher in Model.Publishers)
+                        {
+                            @if (publisher.PublisherID == comic.PublisherID)
+                            {
+                                <li>@publisher.PublisherName</li>
+                            }
+                        }
+                    }
+                }
+            </ul>
+        }
+    </div>
+</div>

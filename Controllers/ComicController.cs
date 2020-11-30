@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ComicShop.Models;
+using Microsoft.AspNetCore.Authorization;
+using ComicShop.Models.ViewModels;
 
 namespace ComicShop.Controllers
 {
+    [Authorize]
     public class ComicController : Controller
     {
         private readonly ComicContex _context;
@@ -19,9 +22,48 @@ namespace ComicShop.Controllers
         }
 
         // GET: Comic
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString, string currentfilter, int? pageNumber)
         {
-            return View(await _context.Comics.Include(p => p.PublisherClass).Include(w => w.Writer).Include(a => a.Artist).ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["TitleSortParam"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            ViewData["PublisherSortParam"] = sortOrder == "Publisher" ? "publisher_desc" : "Publisher";
+
+            var comics = from c in _context.Comics.Include(p => p.PublisherClass).Include(w => w.Writer).Include(a => a.Artist) select c;
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentfilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                comics = comics.Where(c => c.Title.Contains(searchString) || c.PublisherClass.PublisherName.Contains(searchString) || c.Writer.WriterName.Contains(searchString) || c.Artist.ArtistName.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "title_desc":
+                    comics = comics.OrderByDescending(c => c.Title);
+                    break;
+                case "Publisher":
+                    comics = comics.OrderBy(c => c.PublisherClass.PublisherName);
+                    break;
+                case "publisher_desc":
+                    comics = comics.OrderByDescending(c => c.PublisherClass.PublisherName);
+                    break;
+                default:
+                    comics = comics.OrderBy(c => c.Title);
+                    break;
+            }
+
+            int pageSize = 3;
+            return View(await PaginatedList<Comic>.CreateAsync(comics.AsNoTracking(), pageNumber ?? 1, pageSize));
+            //return View(await _context.Comics.Include(p => p.PublisherClass).Include(w => w.Writer).Include(a => a.Artist).ToListAsync());
         }
 
         // GET: Comic/Details/5
@@ -47,7 +89,7 @@ namespace ComicShop.Controllers
         public IActionResult Create()
         {
             ViewData["WriterID"] = new SelectList(_context.Writers, "WriterID", "WriterName");
-            ViewData["WriterID"] = new SelectList(_context.Artists, "ArtistID", "ArtistName");
+            ViewData["ArtistId"] = new SelectList(_context.Artists, "ArtistID", "ArtistName");
             ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherName");
             return View();
         }
@@ -66,7 +108,7 @@ namespace ComicShop.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["WriterID"] = new SelectList(_context.Writers, "WriterID", "WriterName", comic.WriterID);
-            ViewData["WriterID"] = new SelectList(_context.Artists, "ArtistID", "ArtistName", comic.ArtistID);
+            ViewData["ArtistId"] = new SelectList(_context.Artists, "ArtistID", "ArtistName", comic.ArtistID);
             ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherName", comic.PublisherID);
             return View(comic);
         }
@@ -85,7 +127,7 @@ namespace ComicShop.Controllers
                 return NotFound();
             }
             ViewData["WriterID"] = new SelectList(_context.Writers, "WriterID", "WriterName", comic.WriterID);
-            ViewData["WriterID"] = new SelectList(_context.Artists, "ArtistID", "ArtistName", comic.ArtistID);
+            ViewData["ArtistID"] = new SelectList(_context.Artists, "ArtistID", "ArtistName", comic.ArtistID);
             ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherName", comic.PublisherID);
             return View(comic);
         }
@@ -123,7 +165,7 @@ namespace ComicShop.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["WriterID"] = new SelectList(_context.Writers, "WriterID", "WriterName", comic.WriterID);
-            ViewData["WriterID"] = new SelectList(_context.Artists, "ArtistID", "ArtistName", comic.ArtistID);
+            ViewData["ArtistID"] = new SelectList(_context.Artists, "ArtistID", "ArtistName", comic.ArtistID);
             ViewData["PublisherID"] = new SelectList(_context.Publishers, "PublisherID", "PublisherName", comic.PublisherID);
             return View(comic);
         }

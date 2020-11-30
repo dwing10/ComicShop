@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ComicShop.Models;
+using Microsoft.AspNetCore.Authorization;
+using ComicShop.Models.ViewModels;
 
 namespace ComicShop.Controllers
 {
+    [Authorize]
     public class ArtistController : Controller
     {
         private readonly ComicContex _context;
@@ -33,7 +36,7 @@ namespace ComicShop.Controllers
             }
 
             var artist = await _context.Artists
-                .FirstOrDefaultAsync(m => m.ArtistId == id);
+                .FirstOrDefaultAsync(m => m.ArtistID == id);
             if (artist == null)
             {
                 return NotFound();
@@ -87,7 +90,7 @@ namespace ComicShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ArtistId,ArtistName")] Artist artist)
         {
-            if (id != artist.ArtistId)
+            if (id != artist.ArtistID)
             {
                 return NotFound();
             }
@@ -101,7 +104,7 @@ namespace ComicShop.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ArtistExists(artist.ArtistId))
+                    if (!ArtistExists(artist.ArtistID))
                     {
                         return NotFound();
                     }
@@ -124,7 +127,7 @@ namespace ComicShop.Controllers
             }
 
             var artist = await _context.Artists
-                .FirstOrDefaultAsync(m => m.ArtistId == id);
+                .FirstOrDefaultAsync(m => m.ArtistID == id);
             if (artist == null)
             {
                 return NotFound();
@@ -144,9 +147,21 @@ namespace ComicShop.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult PublicationView() 
+        {
+            var data = new PublicationArtistViewModel
+            {
+                Artists = _context.Artists.ToList(),
+                Comics = _context.Comics.ToList(),
+                Publishers = _context.Publishers.ToList()
+            };
+
+            return View(data);
+        }
+
         private bool ArtistExists(int id)
         {
-            return _context.Artists.Any(e => e.ArtistId == id);
+            return _context.Artists.Any(e => e.ArtistID == id);
         }
     }
 }

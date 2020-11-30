@@ -30,12 +30,12 @@ namespace ComicShop.Models
                 new Writer { WriterID = 6, WriterName = "David Michelinie" });
 
             modelBuilder.Entity<Artist>().HasData(
-                new Artist {ArtistId = 1, ArtistName = "Jim Lee" },
-                new Artist {ArtistId = 2, ArtistName = "Alex Ross" },
-                new Artist { ArtistId = 3, ArtistName = "Multiple" },
-                new Artist { ArtistId = 4, ArtistName = "Philip Tan"},
-                new Artist {ArtistId = 5, ArtistName = "Gene Colan" },
-                new Artist { ArtistId = 6, ArtistName = "Mark Bagley" });
+                new Artist {ArtistID = 1, ArtistName = "Jim Lee" },
+                new Artist {ArtistID = 2, ArtistName = "Alex Ross" },
+                new Artist { ArtistID = 3, ArtistName = "Multiple" },
+                new Artist { ArtistID = 4, ArtistName = "Philip Tan"},
+                new Artist {ArtistID = 5, ArtistName = "Gene Colan" },
+                new Artist { ArtistID = 6, ArtistName = "Mark Bagley" });
 
             modelBuilder.Entity<Publisher>().HasData(
                 new Publisher {PublisherID = 1, PublisherName = "Marvel Studios", City = "New York", State = "NY", Country = "US", PostalCode = "10001", Email = "OnlineSupport@marvel.com." },
