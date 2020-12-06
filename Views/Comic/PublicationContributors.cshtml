@@ -1,0 +1,51 @@
+﻿@model PublicationArtistViewModel
+@{
+    ViewData["Title"] = "Publication Contributors";
+}
+<body>
+    <div class="row bg-dark text-warning" style="border-radius:25px;padding:20px;">
+        <h1 class="text-center col-md-12" style="padding-bottom:25px;">@ViewBag.Title</h1>
+        <div class="col-md-4">
+            @foreach (var item in Model.Artists)
+            {
+                <h4>@item.ArtistName</h4>
+                <ul>
+                    @foreach (var comic in Model.Comics)
+                    {
+                        @if (item.ArtistID == comic.ArtistID)
+                        {
+                            @foreach (var publisher in Model.Publishers)
+                            {
+                                @if (publisher.PublisherID == comic.PublisherID)
+                                {
+                                    <li>@publisher.PublisherName</li>
+                                }
+                            }
+                        }
+                    }
+                </ul>
+            }
+        </div>
+        <div class="col-md-4">
+            @foreach (var item in Model.Writers)
+            {
+                <h4>@item.WriterName</h4>
+                <ul>
+                    @foreach (var comic in Model.Comics)
+                    {
+                        @if (item.WriterID == comic.WriterID)
+                        {
+                            @foreach (var publisher in Model.Publishers)
+                            {
+                                @if (publisher.PublisherID == comic.PublisherID)
+                                {
+                                    <li>@publisher.PublisherName</li>
+                                }
+                            }
+                        }
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+</body>

@@ -200,6 +200,22 @@ namespace ComicShop.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /// <summary>
+        /// shows writers/ artists and the publications that they have contributed to
+        /// </summary>
+        public IActionResult PublicationContributors()
+        {
+            var data = new PublicationArtistViewModel
+            {
+                Artists = _context.Artists.ToList(),
+                Comics = _context.Comics.ToList(),
+                Publishers = _context.Publishers.ToList(),
+                Writers = _context.Writers.ToList()
+            };
+
+            return View(data);
+        }
+
         private bool ComicExists(int id)
         {
             return _context.Comics.Any(e => e.ComicId == id);

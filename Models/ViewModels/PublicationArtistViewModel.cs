@@ -10,5 +10,6 @@ namespace ComicShop.Models.ViewModels
         public List<Artist> Artists { get; set; }
         public List<Comic> Comics { get; set; }
         public List<Publisher> Publishers { get; set; }
+        public List<Writer> Writers { get; set; }
     }
 }
