@@ -4,7 +4,7 @@
     ViewData["Title"] = "Publishers";
 }
 
-<h1>Index</h1>
+<h1>Publishers</h1>
 
 <p>
     <a asp-action="Create">Add Publisher</a>
@@ -20,7 +20,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="text-light">
             <td>
                 @Html.DisplayFor(modelItem => item.PublisherName)
             </td>

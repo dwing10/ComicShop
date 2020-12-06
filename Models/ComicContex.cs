@@ -21,6 +21,7 @@ namespace ComicShop.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
+
             modelBuilder.Entity<Writer>().HasData(
                 new Writer { WriterID=1, WriterName="Jeph Loeb"},
                 new Writer {WriterID = 2, WriterName = "John Byrne" },
