@@ -88,7 +88,7 @@ namespace ComicShop.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ArtistId,ArtistName")] Artist artist)
+        public async Task<IActionResult> Edit(int id, [Bind("ArtistID,ArtistName")] Artist artist)
         {
             if (id != artist.ArtistID)
             {
